@@ -2,6 +2,7 @@ import json
 import requests
 
 class Communicator:
+    proxies = None
 
     @staticmethod
     def send(url: str, data, params=None) -> requests.Response or None:

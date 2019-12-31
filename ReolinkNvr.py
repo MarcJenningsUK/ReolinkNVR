@@ -23,13 +23,12 @@ class ReolinkNvr:
         self.token = None
         self.username = username
         self.password = password
-        #Request.proxies = kwargs.get("proxy")  # Defaults to None if key isn't found
+        Communicator.proxies = kwargs.get("proxy")  # Defaults to None if key isn't found
 
     
     def login(self) -> bool:
         """
-        Get login token
-        Must be called first, before any other operation can be performed
+        Login in to obtain authentication token
         :return: bool
         """
         try:
@@ -54,6 +53,10 @@ class ReolinkNvr:
             raise
 
     def logout(self) -> bool:
+        """
+        Log out of the NVR
+        :return: bool
+        """
         try:
             body=[{"cmd": "Logout", "action": 0}]
             param = {"cmd": "Logout", "token": self.token}
@@ -67,7 +70,11 @@ class ReolinkNvr:
             print("Logout Error \n", e)
             raise
 
-    def channelstatus(self) -> json or None:
+    def getchannelstatus(self) -> json or None:
+        """
+        Load the status of available channels in the NVR
+        :returns: json
+        """
         try:
             body = [{"cmd": "GetChannelStatus","action": 0}]
             param = {"cmd": "GetChannelStatus", "token": self.token}
@@ -89,7 +96,8 @@ class ReolinkNvr:
 
 
 
+
 class AttachedCamera:
-    def __init__(self, channel: str, online: str):
+    def __init__(self, channel: str, online: bool):
         self.channel = channel
         self.online = online
